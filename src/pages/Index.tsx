@@ -89,10 +89,13 @@ const Index = () => {
           <div className="max-w-4xl mx-auto">
             {/* Header */}
             <div className="text-center mb-12 animate-fade-in">
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-doc-primary via-doc-secondary to-doc-accent bg-clip-text text-transparent mb-6 animate-glow-pulse">
-                Document AI Processor
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-doc-primary via-doc-secondary to-doc-accent bg-clip-text text-transparent mb-6 animate-glow-pulse leading-tight">
+                Welcome to Intelligent Document Processing using ABBYY
               </h1>
-              <p className="text-2xl text-foreground/90 font-medium">
+              <p className="text-xl text-doc-accent font-semibold mb-4">
+                powered by RAG and MCP Server
+              </p>
+              <p className="text-lg text-foreground/80 font-medium">
                 ✨ Upload your docs and let AI do the magic ✨
               </p>
             </div>
