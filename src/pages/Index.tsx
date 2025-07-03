@@ -138,6 +138,28 @@ const Index = () => {
           </div>
         </div>
 
+        {/* Car Scene Image Section */}
+        <div className="container mx-auto px-4 py-16">
+          <div className="max-w-4xl mx-auto">
+            <div className="relative group overflow-hidden rounded-2xl border border-doc-primary/30 shadow-2xl">
+              <img 
+                src="/lovable-uploads/a57415d4-dd4b-451e-bb6a-3ad25bdd2b69.png"
+                alt="Car Scene Aesthetic"
+                className="w-full h-96 object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"></div>
+              <div className="absolute bottom-8 left-8 right-8">
+                <h3 className="text-3xl font-bold text-white drop-shadow-lg mb-2">
+                  🚗 Ride the Future
+                </h3>
+                <p className="text-white/90 text-lg drop-shadow-md">
+                  Where technology meets lifestyle
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Features Section with Neon background */}
         <div className="container mx-auto px-4 py-20 min-h-screen flex items-center">
           <div className="max-w-4xl mx-auto text-center">
