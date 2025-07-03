@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Clipboard } from 'lucide-react';
+import { Clipboard, Send } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface ResultsViewProps {
   selectedModel: string;
@@ -8,6 +9,8 @@ interface ResultsViewProps {
 
 const ResultsView: React.FC<ResultsViewProps> = ({ selectedModel, onStartOver }) => {
   const [copied, setCopied] = useState(false);
+  const [sending, setSending] = useState(false);
+  const { toast } = useToast();
 
   const sampleResults = {
     "invoice": {
@@ -41,6 +44,40 @@ const ResultsView: React.FC<ResultsViewProps> = ({ selectedModel, onStartOver })
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy JSON:', err);
+    }
+  };
+
+  const handleSendData = async () => {
+    setSending(true);
+    
+    try {
+      const response = await fetch('https://sarvottam08.app.n8n.cloud/webhook-test/b0165af1-4fb1-43c0-8513-7ef7d871156c', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode: 'no-cors',
+        body: JSON.stringify({
+          ...sampleResults,
+          timestamp: new Date().toISOString(),
+          model: selectedModel,
+          source: 'intelligent-document-processing'
+        }),
+      });
+
+      toast({
+        title: "✅ Data Sent Successfully!",
+        description: "Your extracted data has been sent to n8n workflow.",
+      });
+    } catch (error) {
+      console.error('Error sending data:', error);
+      toast({
+        title: "❌ Failed to Send Data",
+        description: "There was an error sending data to n8n. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setSending(false);
     }
   };
 
@@ -82,7 +119,22 @@ const ResultsView: React.FC<ResultsViewProps> = ({ selectedModel, onStartOver })
         </div>
       </div>
 
-      <div className="flex justify-center pt-6">
+      <div className="flex justify-center gap-6 pt-6">
+        <button
+          onClick={handleSendData}
+          disabled={sending}
+          className={`
+            flex items-center space-x-3 px-8 py-4 rounded-xl font-bold transition-all duration-300 transform hover:scale-105
+            ${sending 
+              ? 'bg-gradient-to-r from-doc-primary/50 to-doc-secondary/50 text-white cursor-not-allowed' 
+              : 'bg-gradient-to-r from-doc-primary to-doc-secondary hover:from-doc-primary-hover hover:to-doc-secondary text-white hover:shadow-lg hover:shadow-doc-primary/25'
+            }
+          `}
+        >
+          <Send size={20} />
+          <span>{sending ? '🚀 Sending...' : '📤 Send Data'}</span>
+        </button>
+        
         <button
           onClick={onStartOver}
           className="bg-gradient-to-r from-card-bg to-card-border/20 hover:from-doc-primary/20 hover:to-doc-secondary/20 text-foreground px-8 py-4 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 border border-card-border"
