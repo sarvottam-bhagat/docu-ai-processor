@@ -180,6 +180,64 @@ const Index = () => {
             </div>
           </div>
         </div>
+
+        {/* Footer Section with Images */}
+        <footer className="container mx-auto px-4 py-16">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h3 className="text-3xl font-bold bg-gradient-to-r from-doc-primary to-doc-secondary bg-clip-text text-transparent mb-4">
+                🌟 Experience the Vibe
+              </h3>
+              <p className="text-foreground/80 text-lg">
+                Where cutting-edge AI meets next-gen aesthetics
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              {/* Neon Dreams Image */}
+              <div className="relative group">
+                <div className="overflow-hidden rounded-2xl border border-doc-primary/30 shadow-2xl">
+                  <img 
+                    src="/lovable-uploads/f89df29f-7a3c-431a-a4ab-9690bbd17631.png"
+                    alt="Neon Dreams Aesthetic"
+                    className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-doc-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                <div className="absolute bottom-4 left-4 right-4 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-white font-bold text-lg drop-shadow-lg">✨ Neon Dreams</p>
+                </div>
+              </div>
+
+              {/* Tropical Vibes Image */}
+              <div className="relative group">
+                <div className="overflow-hidden rounded-2xl border border-doc-secondary/30 shadow-2xl">
+                  <img 
+                    src="/lovable-uploads/5883d317-b1ed-493b-9f97-e827b5822755.png"
+                    alt="Tropical Vibes Aesthetic"
+                    className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-doc-secondary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                <div className="absolute bottom-4 left-4 right-4 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-white font-bold text-lg drop-shadow-lg">🌴 Tropical Vibes</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Text */}
+            <div className="text-center border-t border-card-border/30 pt-8">
+              <p className="text-foreground/60 mb-4">
+                © 2024 Intelligent Document Processing using ABBYY • Powered by RAG and MCP Server
+              </p>
+              <div className="flex justify-center space-x-6">
+                <span className="text-doc-primary font-semibold">⚡ Lightning Fast</span>
+                <span className="text-doc-secondary font-semibold">🎯 Highly Accurate</span>
+                <span className="text-doc-accent font-semibold">🔒 Secure</span>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );
