@@ -45,8 +45,24 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background font-inter relative overflow-hidden">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-background to-blue-900/20"></div>
+      {/* Rotating background images */}
+      <div className="absolute inset-0 opacity-20">
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-2000 animate-pulse"
+          style={{ backgroundImage: `url('/lovable-uploads/9e9469b7-67f1-4c1a-857a-d1ee26f70637.png')` }}
+        ></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-2000 animate-pulse delay-2000"
+          style={{ backgroundImage: `url('/lovable-uploads/65d85017-b536-46a7-81b8-d1cb3b25713b.png')` }}
+        ></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-2000 animate-pulse delay-4000"
+          style={{ backgroundImage: `url('/lovable-uploads/7f930dad-665a-437d-901f-d0527627aa2f.png')` }}
+        ></div>
+      </div>
+      
+      {/* Animated background gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/60 via-background/80 to-blue-900/60"></div>
       
       {/* Floating neon orbs */}
       <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-doc-primary/20 rounded-full blur-xl animate-pulse"></div>
