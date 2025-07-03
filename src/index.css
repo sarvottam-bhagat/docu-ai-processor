@@ -2,14 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Document Processing App Design System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 216 12% 97%;
     --foreground: 222.2 84% 4.9%;
+    
+    /* Document processing specific colors */
+    --doc-primary: 217 91% 60%;
+    --doc-primary-hover: 217 91% 55%;
+    --doc-secondary: 210 40% 96.1%;
+    --doc-success: 142 76% 36%;
+    --doc-warning: 48 96% 53%;
+    --doc-danger: 0 84% 60%;
+    
+    /* AI suggestion box */
+    --suggestion-bg: 214 100% 97%;
+    --suggestion-border: 217 91% 60%;
+    
+    /* Code block */
+    --code-bg: 224 71% 4%;
+    --code-text: 213 31% 91%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
