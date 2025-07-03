@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Clipboard, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import NaturalLanguageQuery from './NaturalLanguageQuery';
 
 interface ResultsViewProps {
   selectedModel: string;
@@ -117,6 +118,11 @@ const ResultsView: React.FC<ResultsViewProps> = ({ selectedModel, onStartOver })
             {JSON.stringify(sampleResults, null, 2)}
           </pre>
         </div>
+      </div>
+
+      {/* Natural Language Querying Section */}
+      <div className="border-t border-card-border/30 pt-8">
+        <NaturalLanguageQuery extractedData={sampleResults} />
       </div>
 
       <div className="flex justify-center gap-6 pt-6">
