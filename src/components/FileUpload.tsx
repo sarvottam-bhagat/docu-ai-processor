@@ -55,10 +55,10 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect }) => {
   return (
     <div
       className={`
-        border-2 border-dashed rounded-xl p-12 text-center transition-colors cursor-pointer
+        relative border-2 border-dashed rounded-2xl p-12 text-center transition-all duration-300 cursor-pointer group
         ${isDragOver 
-          ? 'border-doc-primary bg-suggestion-bg' 
-          : 'border-gray-300 hover:border-gray-400'
+          ? 'border-doc-primary bg-doc-primary/10 shadow-lg shadow-doc-primary/25 animate-glow-pulse' 
+          : 'border-doc-primary/30 hover:border-doc-primary/60 hover:bg-doc-primary/5'
         }
       `}
       onDragOver={handleDragOver}
@@ -66,26 +66,35 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect }) => {
       onDrop={handleDrop}
       onClick={handleBrowseClick}
     >
-      <UploadCloud 
-        size={48} 
-        className={`mx-auto mb-4 ${isDragOver ? 'text-doc-primary' : 'text-gray-400'}`} 
-      />
-      <p className="text-lg font-medium text-gray-700 mb-2">
-        Drag and drop your document here
-      </p>
-      <p className="text-gray-500 mb-4">or</p>
-      <button 
-        className="bg-doc-primary hover:bg-doc-primary-hover text-white px-6 py-3 rounded-lg font-medium transition-colors"
-        onClick={(e) => {
-          e.stopPropagation();
-          handleBrowseClick();
-        }}
-      >
-        Browse Files
-      </button>
-      <p className="text-sm text-gray-400 mt-4">
-        Supports PNG, JPG, JPEG, PDF files
-      </p>
+      {/* Neon glow effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-doc-primary/10 via-doc-secondary/10 to-doc-accent/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      
+      <div className="relative z-10">
+        <UploadCloud 
+          size={64} 
+          className={`mx-auto mb-6 transition-all duration-300 ${
+            isDragOver 
+              ? 'text-doc-primary animate-pulse scale-110' 
+              : 'text-doc-primary/70 group-hover:text-doc-primary group-hover:scale-105'
+          }`} 
+        />
+        <p className="text-xl font-semibold text-foreground mb-3">
+          Drop your document here
+        </p>
+        <p className="text-foreground/60 mb-6 text-lg">or</p>
+        <button 
+          className="bg-gradient-to-r from-doc-primary to-doc-secondary hover:from-doc-primary-hover hover:to-doc-secondary text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-doc-primary/25"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleBrowseClick();
+          }}
+        >
+          🚀 Browse Files
+        </button>
+        <p className="text-sm text-foreground/50 mt-6 font-medium">
+          Supports PNG, JPG, JPEG, PDF files • Max 10MB
+        </p>
+      </div>
       
       <input
         ref={fileInputRef}

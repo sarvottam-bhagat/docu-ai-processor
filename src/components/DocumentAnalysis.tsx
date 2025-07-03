@@ -45,27 +45,27 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({
     <div className="grid md:grid-cols-2 gap-8">
       {/* Left Column: Document Preview */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-800">Document Preview</h3>
+        <h3 className="text-xl font-semibold text-foreground">📄 Document Preview</h3>
         
-        <div className="border rounded-lg p-4 bg-gray-50">
+        <div className="border border-card-border rounded-xl p-6 bg-card-bg/30 backdrop-blur-sm">
           <div className="flex items-center space-x-4">
             <div className="flex-shrink-0">
               {filePreview ? (
                 <img 
                   src={filePreview} 
                   alt="Document preview" 
-                  className="w-16 h-16 object-cover rounded-md border"
+                  className="w-20 h-20 object-cover rounded-lg border border-doc-primary/30 shadow-lg"
                 />
               ) : (
-                <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center">
-                  <FileText size={32} className="text-gray-400" />
+                <div className="w-20 h-20 bg-gradient-to-br from-doc-primary/20 to-doc-secondary/20 rounded-lg flex items-center justify-center border border-doc-primary/30">
+                  <FileText size={32} className="text-doc-primary" />
                 </div>
               )}
             </div>
             
             <div className="flex-grow">
-              <p className="font-medium text-gray-800 truncate">{file.name}</p>
-              <p className="text-sm text-gray-500">{formatFileSize(file.size)}</p>
+              <p className="font-semibold text-foreground truncate text-lg">{file.name}</p>
+              <p className="text-foreground/70 font-medium">{formatFileSize(file.size)}</p>
             </div>
           </div>
         </div>
@@ -75,13 +75,14 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({
       <div className="space-y-6">
         {/* AI Suggestion Box */}
         {showSuggestion && (
-          <div className="bg-suggestion-bg border-l-4 border-suggestion-border p-4 rounded-md">
-            <div className="flex items-start space-x-3">
-              <Lightbulb size={20} className="text-suggestion-border mt-0.5 flex-shrink-0" />
+          <div className="bg-suggestion-bg/50 border border-suggestion-border/50 p-6 rounded-xl backdrop-blur-sm relative overflow-hidden animate-fade-in">
+            <div className="absolute inset-0 bg-gradient-to-r from-doc-primary/10 to-doc-secondary/10"></div>
+            <div className="relative z-10 flex items-start space-x-4">
+              <Lightbulb size={24} className="text-doc-primary mt-1 flex-shrink-0 animate-pulse" />
               <div>
-                <p className="text-sm font-medium text-gray-800">AI Suggestion</p>
-                <p className="text-sm text-gray-700 mt-1">
-                  This document appears to be an <strong>Invoice</strong>. We recommend using the 'Invoice' model for the best results.
+                <p className="text-lg font-semibold text-foreground mb-2">🤖 AI Suggestion</p>
+                <p className="text-foreground/80">
+                  This document appears to be an <span className="text-doc-primary font-semibold">Invoice</span>. We recommend using the 'Invoice' model for the best results! ✨
                 </p>
               </div>
             </div>
@@ -89,43 +90,43 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({
         )}
 
         {/* Model Selection */}
-        <div className="space-y-3">
-          <label className="block text-sm font-medium text-gray-700">
-            Select Processing Model
+        <div className="space-y-4">
+          <label className="block text-lg font-semibold text-foreground">
+            🎯 Select Processing Model
           </label>
           <select
             value={selectedModel}
             onChange={handleModelChange}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-doc-primary focus:border-transparent bg-white"
+            className="w-full p-4 border border-card-border rounded-xl focus:ring-2 focus:ring-doc-primary focus:border-doc-primary bg-card-bg/30 backdrop-blur-sm text-foreground font-medium transition-all duration-300"
           >
             <option disabled value="">-- Choose a model --</option>
             
-            <optgroup label="General Purpose">
+            <optgroup label="🔧 General Purpose">
               <option value="document_conversion">Document Conversion</option>
               <option value="image_to_text">Image to Text Extraction</option>
             </optgroup>
             
-            <optgroup label="Accounts Payable">
+            <optgroup label="💼 Accounts Payable">
               <option value="invoice">Invoice</option>
               <option value="purchase_order">Purchase Order</option>
               <option value="remittance_advice">Remittance Advice</option>
             </optgroup>
             
-            <optgroup label="Expense Management">
+            <optgroup label="💳 Expense Management">
               <option value="receipt">Receipt</option>
               <option value="hotel_invoice">Hotel Invoice</option>
               <option value="taxi_receipt">Taxi Receipt</option>
               <option value="utility_bill">Utility Bill</option>
             </optgroup>
             
-            <optgroup label="Know Your Customer (KYC)">
+            <optgroup label="🔍 Know Your Customer (KYC)">
               <option value="us_form_1040">US Form 1040</option>
               <option value="us_form_w2">US Form W-2</option>
               <option value="bank_statement">Bank Statement</option>
               <option value="personal_earnings_statement">Personal Earnings Statement</option>
             </optgroup>
             
-            <optgroup label="Logistics & Customs">
+            <optgroup label="🚚 Logistics & Customs">
               <option value="air_waybill">Air Waybill</option>
               <option value="arrival_notice">Arrival Notice</option>
               <option value="bill_of_lading">Bill of Lading</option>
@@ -139,7 +140,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({
               <option value="sea_waybill">Sea Waybill</option>
             </optgroup>
             
-            <optgroup label="Contracts & Financial">
+            <optgroup label="📋 Contracts & Financial">
               <option value="basic_contract">Basic Contract</option>
               <option value="brokerage_statement">Brokerage Statement</option>
             </optgroup>
@@ -151,14 +152,14 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({
           onClick={onProcess}
           disabled={!selectedModel}
           className={`
-            w-full py-3 px-6 rounded-lg font-medium transition-colors
+            w-full py-4 px-8 rounded-xl font-bold text-lg transition-all duration-300 transform relative overflow-hidden
             ${selectedModel 
-              ? 'bg-doc-primary hover:bg-doc-primary-hover text-white cursor-pointer' 
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              ? 'bg-gradient-to-r from-doc-primary to-doc-secondary hover:from-doc-primary-hover hover:to-doc-secondary text-white cursor-pointer hover:scale-105 hover:shadow-lg hover:shadow-doc-primary/25' 
+              : 'bg-gray-600/30 text-gray-500 cursor-not-allowed'
             }
           `}
         >
-          Process Document
+          {selectedModel ? '🚀 Process Document' : '⚡ Select a Model First'}
         </button>
       </div>
     </div>

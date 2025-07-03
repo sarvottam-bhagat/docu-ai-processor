@@ -45,45 +45,49 @@ const ResultsView: React.FC<ResultsViewProps> = ({ selectedModel, onStartOver })
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 animate-fade-in">
       <div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Extraction Results</h2>
-        <p className="text-gray-600">
-          Processed with: <span className="font-semibold">{formatModelName(selectedModel)} Model</span>
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-doc-primary to-doc-secondary bg-clip-text text-transparent mb-3">
+          🎉 Extraction Results
+        </h2>
+        <p className="text-foreground/80 text-lg">
+          Processed with: <span className="font-bold text-doc-primary">{formatModelName(selectedModel)} Model</span> ✨
         </p>
       </div>
 
       <div className="relative">
-        <div className="flex justify-between items-center mb-3">
-          <h3 className="text-lg font-semibold text-gray-800">Extracted Data</h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl font-bold text-foreground">📊 Extracted Data</h3>
           <button
             onClick={handleCopyJSON}
             className={`
-              flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors
+              flex items-center space-x-3 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300 transform hover:scale-105
               ${copied 
-                ? 'bg-doc-success text-white' 
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                ? 'bg-gradient-to-r from-doc-success to-green-400 text-white animate-pulse' 
+                : 'bg-gradient-to-r from-card-bg to-card-border/20 hover:from-doc-primary/20 hover:to-doc-secondary/20 text-foreground border border-card-border'
               }
             `}
           >
-            <Clipboard size={16} />
-            <span>{copied ? 'Copied!' : 'Copy JSON'}</span>
+            <Clipboard size={18} />
+            <span>{copied ? '✅ Copied!' : '📋 Copy JSON'}</span>
           </button>
         </div>
 
-        <div className="bg-code-bg text-code-text rounded-lg p-4 overflow-x-auto">
-          <pre className="text-sm font-mono">
+        <div className="bg-code-bg/80 backdrop-blur-sm text-code-text rounded-xl p-6 overflow-x-auto border border-doc-primary/30 relative">
+          {/* Subtle neon glow */}
+          <div className="absolute inset-0 bg-gradient-to-r from-doc-primary/5 to-doc-secondary/5 rounded-xl"></div>
+          <pre className="text-sm font-mono relative z-10 text-doc-accent">
             {JSON.stringify(sampleResults, null, 2)}
           </pre>
         </div>
       </div>
 
-      <div className="flex justify-center pt-4">
+      <div className="flex justify-center pt-6">
         <button
           onClick={onStartOver}
-          className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium transition-colors"
+          className="bg-gradient-to-r from-card-bg to-card-border/20 hover:from-doc-primary/20 hover:to-doc-secondary/20 text-foreground px-8 py-4 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 border border-card-border"
         >
-          Process Another Document
+          🔄 Process Another Document
         </button>
       </div>
     </div>
