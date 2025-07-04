@@ -45,6 +45,9 @@ const handler = async (req: Request): Promise<Response> => {
     // Use the correct ABBYY API endpoint structure
     const apiEndpoint = 'https://cloud-westus2.abbyy.com/v1-preview/models/invoice';
 
+    console.log(`Making request to: ${apiEndpoint}`);
+    console.log(`File name: ${file.name}, type: ${file.type}, size: ${bytes.length} bytes`);
+
     // Begin field extraction with ABBYY API
     const extractResponse = await fetch(apiEndpoint, {
       method: 'POST',
@@ -54,9 +57,11 @@ const handler = async (req: Request): Promise<Response> => {
       body: formData,
     });
 
+    console.log(`ABBYY API response status: ${extractResponse.status}`);
+
     if (!extractResponse.ok) {
       const errorText = await extractResponse.text();
-      console.error('ABBYY API error:', errorText);
+      console.error(`ABBYY API error (${extractResponse.status}):`, errorText);
       throw new Error(`ABBYY API error: ${extractResponse.status} - ${errorText}`);
     }
 
