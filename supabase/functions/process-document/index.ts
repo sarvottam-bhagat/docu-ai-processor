@@ -166,14 +166,19 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
   } catch (error: any) {
-    console.error('Error in process-document function:', error);
+    console.error('=== ERROR IN EDGE FUNCTION ===');
+    console.error('Error message:', error.message);
     console.error('Error stack:', error.stack);
+    console.error('Error type:', typeof error);
+    console.error('Full error object:', JSON.stringify(error, null, 2));
     
     return new Response(
       JSON.stringify({ 
         success: false, 
         error: error.message || 'Unknown error occurred',
-        details: error.stack
+        details: error.stack,
+        errorType: typeof error,
+        timestamp: new Date().toISOString()
       }),
       {
         status: 500,
