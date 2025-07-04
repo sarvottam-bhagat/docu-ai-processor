@@ -42,14 +42,8 @@ const handler = async (req: Request): Promise<Response> => {
     const blob = new Blob([bytes], { type: file.type });
     formData.append('file', blob, file.name);
 
-    // Use the correct ABBYY API endpoint based on modelType
-    let apiEndpoint = 'https://cloud-westus2.abbyy.com/v2/processImage';
-    if (modelType === 'invoice') {
-      apiEndpoint += '/invoice';
-    } else {
-      // For now, default to invoice - we can expand this later
-      apiEndpoint += '/invoice';
-    }
+    // Use the correct ABBYY API endpoint structure
+    const apiEndpoint = 'https://cloud-westus2.abbyy.com/v1-preview/models/invoice';
 
     // Begin field extraction with ABBYY API
     const extractResponse = await fetch(apiEndpoint, {
@@ -67,15 +61,18 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const extractResult = await extractResponse.json();
-    const taskId = extractResult.taskId;
-
-    if (!taskId) {
-      throw new Error('Failed to get task ID from ABBYY response');
+    
+    // Check if we got documents array with IDs
+    const documentId = extractResult.documents?.[0]?.id;
+    
+    if (!documentId) {
+      console.error('ABBYY response:', extractResult);
+      throw new Error('Failed to get document ID from ABBYY response');
     }
 
-    console.log(`Document uploaded with task ID: ${taskId}, polling for results...`);
+    console.log(`Document uploaded with ID: ${documentId}, polling for results...`);
 
-    // Poll for results
+    // Poll for results using the correct endpoint
     let processed = false;
     let response;
     let attempts = 0;
@@ -84,7 +81,7 @@ const handler = async (req: Request): Promise<Response> => {
     while (!processed && attempts < maxAttempts) {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       
-      const statusResponse = await fetch(`https://cloud-westus2.abbyy.com/v2/processImage/invoice/${taskId}`, {
+      const statusResponse = await fetch(`https://cloud-westus2.abbyy.com/v1-preview/models/invoice/${documentId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${abbyyApiKey}`,
@@ -92,16 +89,20 @@ const handler = async (req: Request): Promise<Response> => {
       });
 
       if (!statusResponse.ok) {
-        throw new Error(`Failed to check status: ${statusResponse.status}`);
+        const errorText = await statusResponse.text();
+        console.error('Status check error:', errorText);
+        throw new Error(`Failed to check status: ${statusResponse.status} - ${errorText}`);
       }
 
       response = await statusResponse.json();
-      processed = response.status === "Completed";
+      
+      // Check if the document processing is complete based on ABBYY API structure
+      processed = response.invoice?.meta?.status === "Processed";
       attempts++;
 
-      console.log(`Polling attempt ${attempts}: Status = ${response.status}`);
+      console.log(`Polling attempt ${attempts}: Status = ${response.invoice?.meta?.status || 'Unknown'}`);
 
-      if (response.status === "Failed") {
+      if (response.invoice?.meta?.status === "Failed") {
         throw new Error('Document processing failed');
       }
     }
