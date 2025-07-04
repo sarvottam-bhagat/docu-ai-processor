@@ -21,21 +21,27 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    console.log('=== Edge Function Started ===');
     const { file, modelType }: ProcessDocumentRequest = await req.json();
+    console.log(`Processing ${modelType} document: ${file.name}`);
+    
     const abbyyApiKey = Deno.env.get('ABBYY_API_KEY');
 
     if (!abbyyApiKey) {
+      console.error('ABBYY API key not found in environment');
       throw new Error('ABBYY API key not configured');
     }
 
-    console.log(`Starting ${modelType} processing with ABBYY...`);
+    console.log('ABBYY API key found, starting processing...');
 
     // Convert base64 back to blob for processing
+    console.log(`Converting base64 data (length: ${file.data.length})`);
     const binaryString = atob(file.data);
     const bytes = new Uint8Array(binaryString.length);
     for (let i = 0; i < binaryString.length; i++) {
       bytes[i] = binaryString.charCodeAt(i);
     }
+    console.log(`Converted to ${bytes.length} bytes`);
 
     // Create FormData for ABBYY API
     const formData = new FormData();
