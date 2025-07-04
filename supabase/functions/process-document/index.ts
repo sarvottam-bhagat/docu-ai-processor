@@ -42,8 +42,17 @@ const handler = async (req: Request): Promise<Response> => {
     const blob = new Blob([bytes], { type: file.type });
     formData.append('file', blob, file.name);
 
+    // Use the correct ABBYY API endpoint based on modelType
+    let apiEndpoint = 'https://cloud-westus2.abbyy.com/v2/processImage';
+    if (modelType === 'invoice') {
+      apiEndpoint += '/invoice';
+    } else {
+      // For now, default to invoice - we can expand this later
+      apiEndpoint += '/invoice';
+    }
+
     // Begin field extraction with ABBYY API
-    const extractResponse = await fetch('https://cloud-westus2.abbyy.com/v2/processImage/invoice', {
+    const extractResponse = await fetch(apiEndpoint, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${abbyyApiKey}`,

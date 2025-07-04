@@ -24,10 +24,15 @@ export class AbbyyDocumentService {
 
       if (error) {
         console.error('Edge Function error:', error);
-        throw new Error(`Processing failed: ${error.message}`);
+        throw new Error(`Processing failed: ${error.message || error.details || 'Unknown edge function error'}`);
+      }
+
+      if (!data) {
+        throw new Error('No data returned from Edge Function');
       }
 
       if (!data.success) {
+        console.error('Processing failed:', data.error);
         throw new Error(data.error || 'Unknown processing error');
       }
 
