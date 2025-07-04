@@ -5,31 +5,18 @@ import NaturalLanguageQuery from './NaturalLanguageQuery';
 
 interface ResultsViewProps {
   selectedModel: string;
+  extractedData: any;
   onStartOver: () => void;
 }
 
-const ResultsView: React.FC<ResultsViewProps> = ({ selectedModel, onStartOver }) => {
+const ResultsView: React.FC<ResultsViewProps> = ({ selectedModel, extractedData, onStartOver }) => {
   const [copied, setCopied] = useState(false);
   const [sending, setSending] = useState(false);
   const { toast } = useToast();
 
-  const sampleResults = {
-    "invoice": {
-      "meta": {
-        "id": "r23qpmmjsc7f93o3",
-        "status": "Processed"
-      },
-      "fields": {
-        "invoiceNumber": "9435435",
-        "invoiceDate": "2021-11-11",
-        "total": 4620,
-        "currency": "CAD",
-        "vendor": {
-          "name": "ANADAYA CANADA",
-          "address": "262 Merrier Avenue, Toronto, Ontario T1T 3R29"
-        }
-      }
-    }
+  // Use real extracted data from ABBYY
+  const resultsData = extractedData || {
+    "message": "No data extracted"
   };
 
   const formatModelName = (model: string) => {
@@ -40,7 +27,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ selectedModel, onStartOver })
 
   const handleCopyJSON = async () => {
     try {
-      await navigator.clipboard.writeText(JSON.stringify(sampleResults, null, 2));
+      await navigator.clipboard.writeText(JSON.stringify(resultsData, null, 2));
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -59,7 +46,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ selectedModel, onStartOver })
         },
         mode: 'no-cors',
         body: JSON.stringify({
-          ...sampleResults,
+          ...resultsData,
           timestamp: new Date().toISOString(),
           model: selectedModel,
           source: 'intelligent-document-processing'
@@ -115,14 +102,14 @@ const ResultsView: React.FC<ResultsViewProps> = ({ selectedModel, onStartOver })
           {/* Subtle neon glow */}
           <div className="absolute inset-0 bg-gradient-to-r from-doc-primary/5 to-doc-secondary/5 rounded-xl"></div>
           <pre className="text-sm font-mono relative z-10 text-doc-accent">
-            {JSON.stringify(sampleResults, null, 2)}
+            {JSON.stringify(resultsData, null, 2)}
           </pre>
         </div>
       </div>
 
       {/* Natural Language Querying Section */}
       <div className="border-t border-card-border/30 pt-8">
-        <NaturalLanguageQuery extractedData={sampleResults} />
+        <NaturalLanguageQuery extractedData={resultsData} />
       </div>
 
       <div className="flex justify-center gap-6 pt-6">

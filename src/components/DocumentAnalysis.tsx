@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FileText, Lightbulb } from 'lucide-react';
+import { abbyyService } from '../services/abbyyService';
 
 interface DocumentAnalysisProps {
   file: File;

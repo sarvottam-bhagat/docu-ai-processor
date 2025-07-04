@@ -3,6 +3,9 @@ import FileUpload from '../components/FileUpload';
 import DocumentAnalysis from '../components/DocumentAnalysis';
 import ProcessingView from '../components/ProcessingView';
 import ResultsView from '../components/ResultsView';
+import { abbyyService } from '../services/abbyyService';
+import { useToast } from '@/hooks/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 
 type AppState = 'initial' | 'file_uploaded' | 'suggestion_received' | 'processing' | 'results_displayed';
 
@@ -11,6 +14,8 @@ const Index = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedModel, setSelectedModel] = useState<string>('');
   const [showSuggestion, setShowSuggestion] = useState(false);
+  const [extractedData, setExtractedData] = useState<any>(null);
+  const { toast } = useToast();
 
   const handleFileSelect = (file: File) => {
     setSelectedFile(file);
@@ -27,13 +32,29 @@ const Index = () => {
     setSelectedModel(model);
   };
 
-  const handleProcess = () => {
+  const handleProcess = async () => {
+    if (!selectedFile || !selectedModel) return;
+    
     setState('processing');
     
-    // Simulate processing time (3 seconds)
-    setTimeout(() => {
+    try {
+      const result = await abbyyService.processDocument(selectedFile, selectedModel);
+      setExtractedData(result);
       setState('results_displayed');
-    }, 3000);
+      
+      toast({
+        title: "✅ Processing Complete!",
+        description: "Your document has been successfully processed with ABBYY.",
+      });
+    } catch (error) {
+      console.error('Processing error:', error);
+      toast({
+        title: "❌ Processing Failed",
+        description: error instanceof Error ? error.message : "Failed to process document. Please try again.",
+        variant: "destructive",
+      });
+      setState('suggestion_received'); // Go back to previous state
+    }
   };
 
   const handleStartOver = () => {
@@ -123,10 +144,11 @@ const Index = () => {
                   </div>
                 )}
 
-                {state === 'results_displayed' && (
+                {state === 'results_displayed' && extractedData && (
                   <div className="animate-fade-in">
                     <ResultsView
                       selectedModel={selectedModel}
+                      extractedData={extractedData}
                       onStartOver={handleStartOver}
                     />
                   </div>
@@ -261,6 +283,7 @@ const Index = () => {
           </div>
         </footer>
       </div>
+      <Toaster />
     </div>
   );
 };
