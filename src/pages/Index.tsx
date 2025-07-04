@@ -6,6 +6,7 @@ import ResultsView from '../components/ResultsView';
 import { abbyyService } from '../services/abbyyService';
 import { useToast } from '@/hooks/use-toast';
 import { Toaster } from '@/components/ui/toaster';
+import { useMobileUploadPolling } from '@/hooks/useMobileUploadPolling';
 
 type AppState = 'initial' | 'file_uploaded' | 'suggestion_received' | 'processing' | 'results_displayed';
 
@@ -27,6 +28,9 @@ const Index = () => {
       setState('suggestion_received');
     }, 1500);
   };
+
+  // Poll for mobile uploads
+  useMobileUploadPolling(handleFileSelect);
 
   const handleModelSelect = (model: string) => {
     setSelectedModel(model);

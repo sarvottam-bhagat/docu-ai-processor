@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { UploadCloud } from 'lucide-react';
+import MobileUploadButton from './MobileUploadButton';
 
 interface FileUploadProps {
   onFileSelect: (file: File) => void;
@@ -95,6 +96,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect }) => {
           Supports PNG, JPG, JPEG, PDF files • Max 10MB
         </p>
       </div>
+      
+      <MobileUploadButton onFileSelect={onFileSelect} />
       
       <input
         ref={fileInputRef}
