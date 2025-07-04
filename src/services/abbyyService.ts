@@ -79,11 +79,12 @@ export class AbbyyDocumentService {
 
   async processDocument(file: File, modelType: string): Promise<any> {
     switch (modelType) {
+      case 'invoice':
       case 'invoice_fast':
       case 'invoice_advanced':
         return this.processInvoiceDocument(file);
       default:
-        throw new Error(`Model type ${modelType} not yet implemented`);
+        throw new Error(`Model type ${modelType} not yet implemented. Currently only invoice processing is available.`);
     }
   }
 }
